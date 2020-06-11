@@ -28,16 +28,33 @@ class defaultNumbers extends Component {
     }
     async getCountryData() {
         let country = this.state.selectedCountry
-        let countryData = await axios.get(`https://api.covid19api.com/live/country/${country}`)
-        console.log('LOOKING HERE')
-        console.log(countryData.data)
-        let lastDay = countryData.data.pop()
-        console.log(lastDay.Confirmed)
-        let total = lastDay.Confirmed
-        let active = lastDay.Active
-        let deaths = lastDay.Deaths
-        let recovered = lastDay.Recovered
-        this.setState({ total, active, deaths, recovered })
+        let countryData = await axios.get(`https://api.covid19api.com/summary`)
+
+        console.log(countryData.data.Countries)
+
+        let total
+        let deaths
+        let recovered
+        countryData.data.Countries.map(i => {
+            console.log(i.Country)
+            if (i.Country === country) {
+                console.log('LOOKING HERE')
+                total = i.TotalConfirmed
+                deaths = i.TotalDeaths
+                recovered = i.TotalRecovered
+
+
+                return i
+            }
+        })
+
+
+        // console.log(lastDay)
+        //  = lastDay.TotalConfirmed
+        // // let active = lastDay.Active
+        // let deaths = lastDay.TotalDeaths
+        // let recovered = lastDay.TotalRecovered
+        this.setState({ total, deaths, recovered })
     }
     componentDidMount() {
         this.getNumbers();
@@ -65,7 +82,7 @@ class defaultNumbers extends Component {
                 <div id='displayCont'>
                     <p>Country: {c}</p>
                     <p>Total Cases: {total} </p>
-                    <p>Active: {active}</p>
+                    {/* <p>Active: {active}</p> */}
                     <p>Deaths: {deaths}</p>
                     <p>Recovered: {recovered}</p>
 
