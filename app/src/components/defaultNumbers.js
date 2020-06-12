@@ -23,8 +23,25 @@ class defaultNumbers extends Component {
     async selectCountry() {
         let selectedCountry = document.getElementById('countryCombo').value
         console.log(selectedCountry)
-        this.setState({ selectedCountry })
-        document.getElementById('searchBut').click()
+        // this.setState({ selectedCountry })
+        let countryData = await axios.get(`https://api.covid19api.com/summary`)
+
+        console.log(countryData.data.Countries)
+
+        let total
+        let deaths
+        let recovered
+        countryData.data.Countries.map(i => {
+            // console.log(i.Country)
+            if (i.Country === selectedCountry) {
+                console.log('LOOKING HERE')
+                total = i.TotalConfirmed
+                deaths = i.TotalDeaths
+                recovered = i.TotalRecovered
+                return i
+            }
+        })
+        this.setState({ total, deaths, recovered })
     }
     async getCountryData() {
         let country = this.state.selectedCountry
@@ -42,18 +59,9 @@ class defaultNumbers extends Component {
                 total = i.TotalConfirmed
                 deaths = i.TotalDeaths
                 recovered = i.TotalRecovered
-
-
                 return i
             }
         })
-
-
-        // console.log(lastDay)
-        //  = lastDay.TotalConfirmed
-        // // let active = lastDay.Active
-        // let deaths = lastDay.TotalDeaths
-        // let recovered = lastDay.TotalRecovered
         this.setState({ total, deaths, recovered })
     }
     componentDidMount() {
@@ -85,8 +93,6 @@ class defaultNumbers extends Component {
                     {/* <p>Active: {active}</p> */}
                     <p>Deaths: {deaths}</p>
                     <p>Recovered: {recovered}</p>
-
-
                 </div>
             </div>
         );
