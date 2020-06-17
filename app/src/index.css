@@ -72,3 +72,15 @@ select {
   position: relative;
   z-index: 1; 
 }
+#selectId{
+  display: inline
+}
+#stateSections {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around
+}
+#stateSections p{
+  margin: 20px;
+}

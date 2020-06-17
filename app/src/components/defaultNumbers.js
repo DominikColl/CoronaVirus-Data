@@ -5,7 +5,7 @@ import { FaArrowCircleDown } from 'react-icons/fa';
 
 class defaultNumbers extends Component {
 
-    state = { countries: [], selectedCountry: '', total: '', active: '', deaths: '', recovered: '' }
+    state = { countries: [], selectedCountry: '', total: '', active: '', deaths: '', recovered: '', states: [], citys: [] }
 
     async getNumbers() {
         let res = await axios.get(
@@ -62,6 +62,24 @@ class defaultNumbers extends Component {
         })
         this.setState({ total, deaths, recovered })
     }
+    async getDetails() {
+        let cityArray = []
+        let stateArray = []
+        let countryData = await axios.get(`https://api.covid19api.com/dayone/country/united-states/status/confirmed`)
+        let data = countryData.data
+        // countryData.data.CountryCode=='US'
+        data.map(i => {
+            // only gets cases
+            // console.log(i)
+            stateArray.push(i.Province)
+            // cityArray.push(i.City)
+        })
+        // let uniqueCity = [...new Set(cityArray)];
+        let states = [...new Set(stateArray)];
+        this.setState({ states })
+        // console.log(uniqueCity)
+        console.log(states)
+    }
     componentDidMount() {
         this.getNumbers();
         this.getCountries();
@@ -74,8 +92,13 @@ class defaultNumbers extends Component {
         let deaths = this.state.deaths
         let recovered = this.state.recovered
         countries = countries.sort()
+        const states = this.state.states
         const f = countries.map(i => {
             return <option value={i}>{i}</option>
+        })
+
+        const s = states.map(i => {
+            return <p>{i}</p>
         })
         return (
             <div>
@@ -86,8 +109,8 @@ class defaultNumbers extends Component {
                         </select>
                     </label>
                 </div>
-
                 <Button color="success" onClick={() => this.getCountryData()}>Search</Button>
+                <Button color='danger' onClick={() => this.getDetails()}>Testing Details</Button>
                 <div id='displayCont'>
                     <p>Country: {c}</p>
                     <p>Total Cases: {total} </p>
@@ -95,7 +118,10 @@ class defaultNumbers extends Component {
                     <p>Deaths: {deaths}</p>
                     <p>Recovered: {recovered}</p>
                 </div>
-            </div>
+                <div id='stateSections'>
+                    {s}
+                </div>
+            </div >
         );
     }
 }
