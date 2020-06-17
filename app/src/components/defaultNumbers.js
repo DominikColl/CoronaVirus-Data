@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import { Button } from 'reactstrap';
+import { FaArrowCircleDown } from 'react-icons/fa';
+
 class defaultNumbers extends Component {
+
     state = { countries: [], selectedCountry: '', total: '', active: '', deaths: '', recovered: '' }
 
     async getNumbers() {
@@ -23,16 +27,12 @@ class defaultNumbers extends Component {
     async selectCountry() {
         let selectedCountry = document.getElementById('countryCombo').value
         console.log(selectedCountry)
-        // this.setState({ selectedCountry })
         let countryData = await axios.get(`https://api.covid19api.com/summary`)
-
         console.log(countryData.data.Countries)
-
         let total
         let deaths
         let recovered
         countryData.data.Countries.map(i => {
-            // console.log(i.Country)
             if (i.Country === selectedCountry) {
                 console.log('LOOKING HERE')
                 total = i.TotalConfirmed
@@ -41,14 +41,12 @@ class defaultNumbers extends Component {
                 return i
             }
         })
-        this.setState({ total, deaths, recovered })
+        this.setState({ total, deaths, recovered, selectedCountry })
     }
+
     async getCountryData() {
         let country = this.state.selectedCountry
         let countryData = await axios.get(`https://api.covid19api.com/summary`)
-
-        console.log(countryData.data.Countries)
-
         let total
         let deaths
         let recovered
@@ -68,7 +66,6 @@ class defaultNumbers extends Component {
         this.getNumbers();
         this.getCountries();
     }
-
     render() {
         let countries = this.state.countries
         let total = this.state.total
@@ -82,11 +79,15 @@ class defaultNumbers extends Component {
         })
         return (
             <div>
-                < p > Numbers </p >
-                <select name="countries" id="countryCombo" onChange={() => this.selectCountry()}>
-                    {f}
-                </select>
-                <button id='searchBut' onClick={() => this.getCountryData()}>Click</button>
+                <div id='selectId'>
+                    <label>
+                        <select name="countries" id="countryCombo" onChange={() => this.selectCountry()}>
+                            {f}
+                        </select>
+                    </label>
+                </div>
+
+                <Button color="success" onClick={() => this.getCountryData()}>Search</Button>
                 <div id='displayCont'>
                     <p>Country: {c}</p>
                     <p>Total Cases: {total} </p>
