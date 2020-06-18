@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { Button } from 'reactstrap';
-import { FaArrowCircleDown } from 'react-icons/fa';
+
 
 class defaultNumbers extends Component {
 
-    state = { countries: [], selectedCountry: '', total: '', active: '', deaths: '', recovered: '', states: [], citys: [] }
+    state = { countries: [], location: '', total: '', deaths: '', recovered: '', states: [], citys: [] }
 
     async getNumbers() {
         let res = await axios.get(
@@ -25,27 +25,28 @@ class defaultNumbers extends Component {
     }
 
     async selectCountry() {
-        let selectedCountry = document.getElementById('countryCombo').value
-        console.log(selectedCountry)
+        let location = document.getElementById('countryCombo').value
+        // console.log(selectedCountry)
         let countryData = await axios.get(`https://api.covid19api.com/summary`)
         console.log(countryData.data.Countries)
         let total
         let deaths
         let recovered
         countryData.data.Countries.map(i => {
-            if (i.Country === selectedCountry) {
+            if (i.Country === location) {
                 console.log('LOOKING HERE')
                 total = i.TotalConfirmed
                 deaths = i.TotalDeaths
                 recovered = i.TotalRecovered
                 return i
             }
+            return null
         })
-        this.setState({ total, deaths, recovered, selectedCountry })
+        this.setState({ total, deaths, recovered, location })
     }
 
     async getCountryData() {
-        let country = this.state.selectedCountry
+        let country = this.state.location
         let countryData = await axios.get(`https://api.covid19api.com/summary`)
         let total
         let deaths
@@ -59,11 +60,13 @@ class defaultNumbers extends Component {
                 recovered = i.TotalRecovered
                 return i
             }
+            return null
         })
         this.setState({ total, deaths, recovered })
     }
+
     async getDetails() {
-        let cityArray = []
+
         let stateArray = []
         let countryData = await axios.get(`https://api.covid19api.com/dayone/country/united-states/status/confirmed`)
         let data = countryData.data
@@ -73,32 +76,54 @@ class defaultNumbers extends Component {
             // console.log(i)
             stateArray.push(i.Province)
             // cityArray.push(i.City)
+            return null
         })
         // let uniqueCity = [...new Set(cityArray)];
         let states = [...new Set(stateArray)];
         this.setState({ states })
         // console.log(uniqueCity)
         console.log(states)
+        return null
+    }
+    async getCity(e) {
+        let cityArray = []
+        let selProvince = e.target.value
+        let countryData = await axios.get(`https://api.covid19api.com/dayone/country/united-states/status/confirmed`)
+        let data = countryData.data
+        data.map(i => {
+            if (i.Province === selProvince) {
+                cityArray.push(i.City)
+            }
+            return null
+        })
+        // set city state
+        // let citys = cityArray
+        let citys = [...new Set(cityArray)];
+        this.setState({ citys })
     }
     componentDidMount() {
         this.getNumbers();
         this.getCountries();
+        this.getDetails();
     }
     render() {
         let countries = this.state.countries
         let total = this.state.total
-        let c = this.state.selectedCountry
-        let active = this.state.active
+        let c = this.state.location
         let deaths = this.state.deaths
         let recovered = this.state.recovered
         countries = countries.sort()
         const states = this.state.states
+        const citysState = this.state.citys
+        // console.log(states)
         const f = countries.map(i => {
             return <option value={i}>{i}</option>
         })
-
         const s = states.map(i => {
-            return <p>{i}</p>
+            return <Button color='info' value={i} id='statesBut' onClick={e => this.getCity(e, 'value')}>{i}</Button>
+        })
+        const citys = citysState.map(i => {
+            return <Button color='info' value={i} id='statesBut' >{i}</Button>
         })
         return (
             <div>
@@ -109,10 +134,10 @@ class defaultNumbers extends Component {
                         </select>
                     </label>
                 </div>
-                <Button color="success" onClick={() => this.getCountryData()}>Search</Button>
-                <Button color='danger' onClick={() => this.getDetails()}>Testing Details</Button>
+                <Button color="success" id='searchBut' onClick={() => this.getCountryData()}>Search</Button>
+                {/* <Button color='danger' onClick={() => this.getDetails()}>Testing Details</Button> */}
                 <div id='displayCont'>
-                    <p>Country: {c}</p>
+                    <p>Location: {c}</p>
                     <p>Total Cases: {total} </p>
                     {/* <p>Active: {active}</p> */}
                     <p>Deaths: {deaths}</p>
@@ -120,6 +145,9 @@ class defaultNumbers extends Component {
                 </div>
                 <div id='stateSections'>
                     {s}
+                </div>
+                <div id='citySection'>
+                    {citys}
                 </div>
             </div >
         );

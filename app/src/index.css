@@ -84,3 +84,9 @@ select {
 #stateSections p{
   margin: 20px;
 }
+#statesBut{
+  margin:.8rem 0
+}
+#searchBut{
+  margin:1rem;
+}
