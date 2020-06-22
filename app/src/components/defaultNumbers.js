@@ -5,7 +5,7 @@ import { Button } from 'reactstrap';
 
 class defaultNumbers extends Component {
 
-    state = { countries: [], location: '', total: '', deaths: '', recovered: '', states: [], citys: [] }
+    state = { countries: [], location: '', total: '', deaths: '', recovered: '', states: [], citys: [], stateData: [], selectedState: '', cityDataArray: [] }
 
     async getNumbers() {
         let res = await axios.get(
@@ -93,13 +93,37 @@ class defaultNumbers extends Component {
         data.map(i => {
             if (i.Province === selProvince) {
                 cityArray.push(i.City)
+                // console.log(i)
             }
             return null
         })
+        let stateData = data
+        let selectedState = selProvince
+        this.setState({ stateData })
+        this.setState({ selectedState })
         // set city state
         // let citys = cityArray
         let citys = [...new Set(cityArray)];
         this.setState({ citys })
+    }
+    cityClickDetails(e) {
+        // console.log(e.target.value)
+        let cityDataArray = []
+        let chosenCity = e.target.value
+        let chosenState = this.state.selectedState
+        // console.log(this.state.stateData)
+        let data = this.state.stateData
+        data.map(i => {
+            if (i.City === chosenCity && i.Province === chosenState) {
+                // console.log(i)
+                cityDataArray.push(i)
+            }
+        })
+        let l = cityDataArray.length
+        let lastReport = cityDataArray[l - 1]
+        let total = lastReport.Cases
+        let location = lastReport.City
+        this.setState({ cityDataArray, total, location })
     }
     componentDidMount() {
         this.getNumbers();
@@ -123,7 +147,7 @@ class defaultNumbers extends Component {
             return <Button color='info' value={i} id='statesBut' onClick={e => this.getCity(e, 'value')}>{i}</Button>
         })
         const citys = citysState.map(i => {
-            return <Button color='info' value={i} id='statesBut' >{i}</Button>
+            return <Button color='info' value={i} id='statesBut' onClick={e => this.cityClickDetails(e, 'value')} >{i}</Button>
         })
         return (
             <div>
