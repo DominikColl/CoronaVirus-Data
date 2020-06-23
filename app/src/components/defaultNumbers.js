@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { Button } from 'reactstrap';
-
+import Graph from './graph'
 
 class defaultNumbers extends Component {
 
@@ -173,6 +173,7 @@ class defaultNumbers extends Component {
                 <div id='citySection'>
                     {citys}
                 </div>
+                <Graph />
             </div >
         );
     }
