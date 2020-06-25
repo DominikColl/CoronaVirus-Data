@@ -11,13 +11,13 @@ const Graph = (props) => {
             <YAxis />
             <LineSeries data=
                 {[
-                    { x: "Monday", y: props.yOne },
-                    { x: "Tuesday", y: props.yTwo },
-                    { x: "Wedsday", y: props.yThree },
-                    { x: "Thursday", y: props.yFour },
-                    { x: "Friday", y: props.yFive },
-                    { x: "Saturday", y: props.ySix },
-                    { x: "Sunday", y: props.ySeven }
+                    { x: props.ttt, y: props.yOne },
+                    { x: props.xTwo, y: props.yTwo },
+                    { x: props.xThree, y: props.yThree },
+                    { x: props.xFour, y: props.yFour },
+                    { x:props.xFive, y: props.yFive },
+                    { x: props.xSix, y: props.ySix },
+                    { x:props.xSeven, y: props.ySeven }
                 ]} />
         </XYPlot >
 
