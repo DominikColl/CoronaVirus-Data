@@ -149,6 +149,10 @@ class defaultNumbers extends Component {
         const citys = citysState.map(i => {
             return <Button color='info' value={i} id='statesBut' onClick={e => this.cityClickDetails(e, 'value')} >{i}</Button>
         })
+        const q = 100;
+        const w = 200;
+        const e = 300;
+        const r = 400
         return (
             <div>
                 <div id='selectId'>
@@ -172,7 +176,7 @@ class defaultNumbers extends Component {
                 <div id='citySection'>
                     {citys}
                 </div>
-                <Graph xOne='2' xTwo='4' xThree='9' />
+                <Graph yOne={q} yTwo={w} yThree={e} yFour={r} />
             </div >
         );
     }

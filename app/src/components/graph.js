@@ -11,10 +11,10 @@ const Graph = (props) => {
             <YAxis />
             <LineSeries data=
                 {[
-                    { x: '2014', y: 75 },
-                    { x: '2015', y: 60 },
-                    { x: '2016', y: 80 },
-                    { x: '2017', y: 90 }
+                    { x: '2014', y: props.yOne },
+                    { x: '2015', y: props.yTwo },
+                    { x: '2016', y: props.yThree },
+                    { x: '2017', y: props.yFour }
                 ]} />
         </XYPlot >
 
