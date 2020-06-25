@@ -163,7 +163,6 @@ class defaultNumbers extends Component {
                 <div id='displayCont'>
                     <p>Location: {c}</p>
                     <p>Total Cases: {total} </p>
-                    {/* <p>Active: {active}</p> */}
                     <p>Deaths: {deaths}</p>
                     <p>Recovered: {recovered}</p>
                 </div>
@@ -173,7 +172,7 @@ class defaultNumbers extends Component {
                 <div id='citySection'>
                     {citys}
                 </div>
-                <Graph />
+                <Graph xOne='2' xTwo='4' xThree='9' />
             </div >
         );
     }
