@@ -5,7 +5,7 @@ import Graph from './graph'
 
 class defaultNumbers extends Component {
 
-    state = { countries: [], location: '', total: '', deaths: '', recovered: '', states: [], citys: [], stateData: [], selectedState: '', cityDataArray: [] }
+    state = { countries: [], location: '', total: '', deaths: '', recovered: '', states: [], citys: [], stateData: [], selectedState: '', cityDataArray: [], lastSevenDays: [{ Date: 2001, Cases: 1000 }, { Date: 2002, Cases: 2000 }, { Date: 2003, Cases: 3000 }, { Date: 2004, Cases: 4000 },{ Date: 2005, Cases: 5000 },{ Date: 2006, Cases: 6000 },{ Date: 2007, Cases: 8000 }] }
 
     async getNumbers() {
         let res = await axios.get(
@@ -117,13 +117,17 @@ class defaultNumbers extends Component {
             if (i.City === chosenCity && i.Province === chosenState) {
                 // console.log(i)
                 cityDataArray.push(i)
+                console.log('CITY DATA')
+                console.log(i)
             }
         })
         let l = cityDataArray.length
         let lastReport = cityDataArray[l - 1]
+        let lastSevenDays = cityDataArray.slice(Math.max(cityDataArray.length - 7, 1))
+        console.log(lastSevenDays)
         let total = lastReport.Cases
         let location = lastReport.City
-        this.setState({ cityDataArray, total, location })
+        this.setState({ cityDataArray, total, location, lastSevenDays })
     }
     componentDidMount() {
         this.getNumbers();
@@ -139,6 +143,7 @@ class defaultNumbers extends Component {
         countries = countries.sort()
         const states = this.state.states
         const citysState = this.state.citys
+        const lastSevenDays = this.state.lastSevenDays
         // console.log(states)
         const f = countries.map(i => {
             return <option value={i}>{i}</option>
@@ -149,10 +154,22 @@ class defaultNumbers extends Component {
         const citys = citysState.map(i => {
             return <Button color='info' value={i} id='statesBut' onClick={e => this.cityClickDetails(e, 'value')} >{i}</Button>
         })
-        const q = 100;
-        const w = 200;
-        const e = 300;
-        const r = 400
+        const yOne = this.state.lastSevenDays[0].Cases;
+        const yTwo = this.state.lastSevenDays[1].Cases;
+        const yThree = this.state.lastSevenDays[2].Cases;
+        const yFour = this.state.lastSevenDays[3].Cases
+        const yFive = this.state.lastSevenDays[4].Cases;
+        const ySix = this.state.lastSevenDays[5].Cases;
+        const ySeven = this.state.lastSevenDays[6].Cases
+        // 
+        const xOne = this.state.lastSevenDays[0].Dates;
+        const xTwo = this.state.lastSevenDays[1].Dates;
+        const xThree = this.state.lastSevenDays[2].Dates;
+        const xFour = this.state.lastSevenDays[3].Dates
+        const xFive = this.state.lastSevenDays[4].Dates
+        const xSix = this.state.lastSevenDays[5].Dates
+        const xSeven = this.state.lastSevenDays[6].Dates
+
         return (
             <div>
                 <div id='selectId'>
@@ -176,7 +193,9 @@ class defaultNumbers extends Component {
                 <div id='citySection'>
                     {citys}
                 </div>
-                <Graph yOne={q} yTwo={w} yThree={e} yFour={r} />
+                <div id='graphSection'>
+                    <Graph yOne={yOne} yTwo={yTwo} yThree={yThree} yFour={yFour} yFive={yFive} ySix={ySix} ySeven={ySeven} xOne={xOne} xTwo={xTwo} xThree={xThree} xFour={xFour} xFive={xFive} xSix={xSix} xSeven={xSeven} id='gr' />
+                </div>
             </div >
         );
     }

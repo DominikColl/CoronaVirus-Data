@@ -91,3 +91,9 @@ select {
 #searchBut{
   margin:1rem;
 }
+#graphSection{
+  margin-left: 20%;
+}
+#gr{
+  padding: 1rem;
+}
