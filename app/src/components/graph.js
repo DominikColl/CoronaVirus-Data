@@ -4,17 +4,20 @@ import { XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, LineSerie
 
 const Graph = (props) => {
     return (
-        <XYPlot height={400} width={800} xType="ordinal">
+        <XYPlot margin={{ left: 100 }} height={400} width={800} xType="ordinal">
             <VerticalGridLines />
             <HorizontalGridLines />
             <XAxis margin={4000} xType="ordinal" />
             <YAxis />
             <LineSeries data=
                 {[
-                    { x: '2014', y: 75 },
-                    { x: '2015', y: 60 },
-                    { x: '2016', y: 80 },
-                    { x: '2017', y: 90 }
+                    { x: props.ttt, y: props.yOne },
+                    { x: props.xTwo, y: props.yTwo },
+                    { x: props.xThree, y: props.yThree },
+                    { x: props.xFour, y: props.yFour },
+                    { x:props.xFive, y: props.yFive },
+                    { x: props.xSix, y: props.ySix },
+                    { x:props.xSeven, y: props.ySeven }
                 ]} />
         </XYPlot >
 
