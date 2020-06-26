@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { Button } from 'reactstrap';
 import Graph from './graph'
+import 'bootstrap/dist/css/bootstrap.css';
 
 class defaultNumbers extends Component {
 
@@ -150,21 +151,62 @@ class defaultNumbers extends Component {
             return <Button color='info' value={i} id='statesBut' onClick={e => this.cityClickDetails(e, 'value')} >{i}</Button>
         })
         return (
-            <div>
-                <div id='selectId'>
-                    <label>
-                        <select name="countries" id="countryCombo" onChange={() => this.selectCountry()}>
+            <div className="page-content">
+                <div className="subheader">
+                    <h1 className="subheader-title">CoronaVirus-Data</h1>
+                    <div>
+                        <select name="countries" className="custom-select" id="countryCombo" onChange={() => this.selectCountry()}>
                             {f}
                         </select>
-                    </label>
-                </div>
-                <Button color="success" id='searchBut' onClick={() => this.getCountryData()}>Search</Button>
+                        <Button color="success" id='searchBut' onClick={() => this.getCountryData()}>Search</Button>
+                    </div>
                 {/* <Button color='danger' onClick={() => this.getDetails()}>Testing Details</Button> */}
-                <div id='displayCont'>
-                    <p>Location: {c}</p>
-                    <p>Total Cases: {total} </p>
-                    <p>Deaths: {deaths}</p>
-                    <p>Recovered: {recovered}</p>
+                </div>
+                <div className="row">
+                    <div className="col-sm-6 col-xl-3">
+                        <div className="location p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                            <div className="">
+                                <h3 className="display-4 d-block l-h-n m-0 fw-500">
+                                    {c}
+                                    <small className="m-0 l-h-n">Location</small>
+                                </h3>
+                            </div>
+                            <i className="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"></i>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-xl-3">
+                        <div className="total-case p-3 bg-warning-400 rounded overflow-hidden position-relative text-white mb-g">
+                            <div className="">
+                                <h3 className="display-4 d-block l-h-n m-0 fw-500">
+                                    {total}
+                                    <small className="m-0 l-h-n">Total Cases</small>
+                                </h3>
+                            </div>
+                            <i className="fal fa-gem position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"></i>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-xl-3">
+                        <div className="death p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g">
+                            <div className="">
+                                <h3 className="display-4 d-block l-h-n m-0 fw-500">
+                                    {deaths}
+                                    <small className="m-0 l-h-n">Deaths</small>
+                                </h3>
+                            </div>
+                            <i className="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"></i>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-xl-3">
+                        <div className="recovered p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                            <div className="">
+                                <h3 className="display-4 d-block l-h-n m-0 fw-500">
+                                {recovered}
+                                <small className="m-0 l-h-n">Recovered</small>
+                                </h3>
+                            </div>
+                            <i className="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"></i>
+                        </div>
+                    </div>
                 </div>
                 <div id='stateSections'>
                     {s}
@@ -172,7 +214,7 @@ class defaultNumbers extends Component {
                 <div id='citySection'>
                     {citys}
                 </div>
-                <Graph xOne='2' xTwo='4' xThree='9' />
+                <Graph xOne='2' xTwo='4' xThree='9'/>
             </div >
         );
     }
